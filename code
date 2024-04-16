@@ -1,0 +1,22 @@
+from scipy.signal import fir_filter_design, freqz
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Define filter parameters
+f_pass = 70e6  # Passband frequency (Hz)
+f_stop = 80e6  # Stopband frequency (Hz)
+a_pass = 0.5   # Passband ripple (dB)
+a_stop = 60    # Stopband attenuation (dB)
+fs = 200e6     # Sampling frequency (Hz)
+
+# Design the filter
+taps = fir_filter_design.firwin2(numtaps=101, freq=[0, f_pass, f_stop, fs/2], gain=[1, 1, 0, 0], fs=fs)
+
+# Visualize the filter frequency response
+w, h = freqz(taps)
+plt.plot((fs * 0.5 / np.pi) * w, abs(h))
+plt.title('Lowpass Filter Frequency Response')
+plt.xlabel('Frequency (Hz)')
+plt.ylabel('Magnitude')
+plt.grid(True)
+plt.show()
